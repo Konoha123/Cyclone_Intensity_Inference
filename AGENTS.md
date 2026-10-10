@@ -34,7 +34,7 @@
 | OpenCV / Pillow | 图像 I/O 和预处理候选工具 | **opencv-python 5.0.0.93 / Pillow 12.3.0**（另装有 numpy 2.5.2） |
 | pytest / Ruff | 建议作为测试和静态检查工具 | **尚未安装**（2026-10-10 实测 `python -m pip show pytest ruff` 无结果） |
 | 运行入口 | CLI/包结构待实现 | **不存在经过验收的命令** |
-| 上游权重 | 从作者仓库外部获取，存放 `weights/` | **尚未校验**：来源、SHA-256、类别表 |
+| 上游权重 | 从作者仓库外部获取，存放 `weights/` | **已下载并记录哈希（2026-10-10）**：`weights/model.pt`，来源、SHA-256、blob 一致性见 `docs/model_provenance.md`；类别表仍未验证 |
 
 代理如需定位环境问题，先使用只读命令（如 `python --version`、`python -m pip show ...`、`git status`）；不要假设 CUDA 可用，也不要自动更换显卡驱动、系统 Python 或用户现有 Conda 环境。
 
@@ -200,8 +200,8 @@ outputs/                 # 预测图表、结果表及导出文件，忽略
 | --- | --- | --- |
 | 本工程名称与远程仓库地址 | `Cyclone-Intensity-Inference` | 用户建立GitHub仓库后补充URL |
 | 项目自身许可证 | **未决定** | 确认依赖/来源许可后选定LICENSE |
-| `.gitignore` | **待新建** | 在下载权重/数据前创建并做忽略测试 |
-| 原始模型来源版本 / SHA-256 | **未记录** | 下载可信权重、固定hash和来源说明 |
+| `.gitignore` | **已建立**（2026-10-10，根目录；`git check-ignore -v` 已验证 `weights/`、`data/` 等忽略生效） | 新增忽略类别时同步更新 |
+| 原始模型来源版本 / SHA-256 | **已记录**：`docs/model_provenance.md`（上游 commit `55328c4`，含 SHA-256、大小、Git blob 一致性核验与复算命令） | 上游更新或更换权重时重新核验并追加记录 |
 | `model.names` 与T值映射 | **未验证** | 模型加载后检查14类与类名编码 |
 | 实际预处理流程 | **未验证** | 单图实验与网页/文档说明逐项对照 |
 | PyTorch / CUDA / Ultralytics兼容组合 | **已实测（CPU）**：Python 3.13.16 + torch 2.14.1+cpu + ultralytics 8.4.175；CUDA 当前不可用（驱动未运行） | 驱动修复后如需GPU，再核验CUDA版组合并重新登记 |

@@ -22,7 +22,7 @@
 
 本仓库独立于 `Cyclone-Intensity-Training`，没有共同Git历史、共同依赖锁文件或跨仓库相对路径。只接收满足约定的模型交付资产（权重本体不进Git）：`model_id`、`model_sha256`、模型结构与依赖版本、输入张量/预处理定义、有序类别表及目标物理量、输出语义、数据/评估适用范围与局限。不能假定新权重与上游模型的类别或预处理相同。
 
-## 拟议工程结构（仅文档和.gitignore已建立）
+## 拟议工程结构（文档、.gitignore、docs/ 与本地权重/数据目录已建立，源码待实现）
 
 ```text
 Cyclone-Intensity-Inference/
@@ -34,9 +34,9 @@ Cyclone-Intensity-Inference/
 ├── scripts/                # 待建立：CLI、工具脚本
 ├── tests/                  # 待建立：无大型真实数据的测试
 ├── configs/                # 待建立：推理配置
-├── docs/                   # 待建立：契约与独立评估记录
-├── weights/                # Git忽略；仅本地
-├── data/                   # Git忽略；本地图像/标签
+├── docs/                # 已建：权重/数据来源与验证记录（docs/model_provenance.md）
+├── weights/                # Git忽略；仅本地（已含上游 model.pt，见 docs/model_provenance.md）
+├── data/                   # Git忽略；本地图像/标签（samples/ 上游示例图、raw/ 原始图、processed/ 处理后图）
 └── outputs/                # Git忽略；预测与图表
 ```
 
