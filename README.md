@@ -34,9 +34,9 @@ Cyclone-Intensity-Inference/
 ├── scripts/                # 待建立：CLI、工具脚本
 ├── tests/                  # 待建立：无大型真实数据的测试
 ├── configs/                # 待建立：推理配置
-├── docs/                # 已建：权重/数据来源与验证记录（docs/model_provenance.md）
+├── docs/                # 已建：权重/数据来源与验证记录（model_provenance.md）、data 目录规则（data_layout.md）
 ├── weights/                # Git忽略；仅本地（已含上游 model.pt，见 docs/model_provenance.md）
-├── data/                   # Git忽略；本地图像/标签（samples/ 上游示例图、raw/ 原始图、processed/ 处理后图）
+├── data/                   # Git忽略；本地图像/标签，子目录规则见 docs/data_layout.md（samples/ 输入示例、reference/ 参考材料、raw/ 原始图、processed/ 处理后图）
 └── outputs/                # Git忽略；预测与图表
 ```
 

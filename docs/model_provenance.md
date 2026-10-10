@@ -38,7 +38,19 @@
 | 与上游一致性 | **已核验**：同上 |
 | 文件格式 | JPEG，baseline，512×512，单通道（灰度），`file` 实测 |
 
-上游另含 `valid_test.png`（作者自报验证结果图），非示例输入，未下载。
+### 2.3 上游自报验证结果图（非输入样本）
+
+| 项目 | 值 |
+| --- | --- |
+| 本地路径 | `data/reference/valid_test.png`（Git 忽略） |
+| 上游路径 | 仓库根目录 `valid_test.png` |
+| 大小 | 70,109 字节 |
+| SHA-256 | `8bc256cdb3ed03ca39f4a6cbcd6eb3e71795ef735fac038943440e81aafcf019` |
+| Git blob SHA | `cdc825fafe7be62c91e412c0d4cda4fcbbc41801` |
+| 与上游一致性 | **已核验**：本地 `git hash-object` 结果、字节数与 GitHub Contents API（ref=main）返回值一致（2026-10-10） |
+| 文件格式 | PNG，700×600，8-bit RGBA，`file` 实测 |
+
+性质说明：此图为**作者自报验证集结果的图表**，仅作参考对照材料，不是模型输入样本，也不构成本项目的独立评估证据（见第 3 节）。
 
 ## 3. 上游自述的模型约定（未实测，仅转录）
 
@@ -73,3 +85,4 @@ curl -s https://api.github.com/repos/EnceladusCat/Cyclone-Intensity-ML/contents/
 | 日期 | 变更 |
 | --- | --- |
 | 2026-10-10 | 首次下载并记录；建立 `data/samples|raw|processed` 子目录结构；核验与上游一致性 |
+| 2026-10-10 | 补充下载上游 `valid_test.png`（自报验证结果图）至 `data/reference/`，核验一致性并登记（2.3 节）；建立 `data/reference/` 子目录，data 目录规则见 `docs/data_layout.md` |
