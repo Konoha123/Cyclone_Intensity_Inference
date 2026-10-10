@@ -66,10 +66,10 @@
 
 | 事项 | 状态 |
 | --- | --- |
-| `model.names` 与 14 类 T 值映射 | 未验证（加载权重后核验） |
-| 输入通道数 / 预处理（CenterCrop、缩放、归一化） | 未验证 |
-| 加载兼容性（ultralytics 8.4.175 + torch 2.14.1+cpu） | 未验证 |
-| 单图推理 Smoke Test | 未执行 |
+| `model.names` 与 T 值映射 | **已核验（2026-10-10，`scripts/demo_i1_infer.py`）**：实际 **13 类**，非上游自述 14 类——索引 0–12 依次为 `15, 25, 30, ..., 80`（即 T1.5, T2.5, T3.0, ..., T8.0），**缺少 T2.0（`20`）**；类别名 = T×10 的编码规则与上游自述一致 |
+| 输入通道数 / 预处理（CenterCrop、缩放、归一化） | 未验证（I2 阶段；demo 脚本使用 Ultralytics 分类默认管线并标注未核验） |
+| 加载兼容性（ultralytics 8.4.175 + torch 2.14.1+cpu） | **已核验（2026-10-10）**：`YOLO("weights/model.pt")` CPU 加载成功，task=classify，imgsz=512 |
+| 单图推理 Smoke Test | **已执行（2026-10-10）**：`data/samples/example_image.jpg` 推理成功，概率非负/有限/和≈1，两次重复推理结果一致；t_mode=T7.5，t_mean=7.2840（未校准）；结果 JSON 输出至 `outputs/demo_i1_result.json`（Git 忽略） |
 
 ## 5. 复算命令
 
@@ -86,3 +86,4 @@ curl -s https://api.github.com/repos/EnceladusCat/Cyclone-Intensity-ML/contents/
 | --- | --- |
 | 2026-10-10 | 首次下载并记录；建立 `data/samples|raw|processed` 子目录结构；核验与上游一致性 |
 | 2026-10-10 | 补充下载上游 `valid_test.png`（自报验证结果图）至 `data/reference/`，核验一致性并登记（2.3 节）；建立 `data/reference/` 子目录，data 目录规则见 `docs/data_layout.md` |
+| 2026-10-10 | I1 验证：新增 `scripts/demo_i1_infer.py`（权重 SHA-256 校验、类别映射核验、单图推理、概率合法性检查、T 值后处理、JSON 输出）；发现实际类别为 13 类（缺 T2.0），第 4 节状态更新 |

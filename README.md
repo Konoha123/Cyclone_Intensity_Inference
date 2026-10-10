@@ -6,7 +6,7 @@
 
 以可信来源的既有模型权重作为起点，构建可复现的本地推理、输入预处理、类别概率解析、连续 Dvorak T-number 估计、独立效果检验和应用服务。当前重点是**固定模型的推理与应用**，不承担训练、微调或训练方案复现。
 
-初始参考模型来自 [EnceladusCat/Cyclone-Intensity-ML](https://github.com/EnceladusCat/Cyclone-Intensity-ML)（在线展示：https://enm-aiir.pages.dev/）。上游描述为 `yolov8m-cls`，14个T值类别 `1.5, 2.0, ..., 8.0`，512×512输入；**权重实际类别映射、通道与预处理流程尚待实测核验**。此仓库为全新独立代码工程，不是上游Fork，模型权重与输入图像不纳入Git。
+初始参考模型来自 [EnceladusCat/Cyclone-Intensity-ML](https://github.com/EnceladusCat/Cyclone-Intensity-ML)（在线展示：https://enm-aiir.pages.dev/）。上游描述为 `yolov8m-cls`，14个T值类别 `1.5, 2.0, ..., 8.0`，512×512输入；**2026-10-10 实测核验（`scripts/demo_i1_infer.py`）：权重实际为 13 类（T1.5, T2.5–T8.0，步长 0.5），缺少 T2.0，与上游自述的 14 类不符**；通道与预处理流程尚待核验。推理与文档均以权重内实际类别表为准，详见 `docs/model_provenance.md` 第 4 节。此仓库为全新独立代码工程，不是上游Fork，模型权重与输入图像不纳入Git。
 
 ## 纳入的工作
 
@@ -31,7 +31,7 @@ Cyclone-Intensity-Inference/
 ├── .gitignore              # 忽略本地权重、测试影像与输出
 ├── pyproject.toml          # 待建立
 ├── src/cyclone_intensity/  # 待建立：推理/预处理/后处理
-├── scripts/                # 待建立：CLI、工具脚本
+├── scripts/                # 已建：demo 与工具脚本（`demo_i1_infer.py`：I1 单图推理演示）
 ├── tests/                  # 待建立：无大型真实数据的测试
 ├── configs/                # 待建立：推理配置
 ├── docs/                # 已建：权重/数据来源与验证记录（model_provenance.md）、data 目录规则（data_layout.md）

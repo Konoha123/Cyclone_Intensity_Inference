@@ -202,7 +202,7 @@ outputs/                 # 预测图表、结果表及导出文件，忽略
 | 项目自身许可证 | **未决定** | 确认依赖/来源许可后选定LICENSE |
 | `.gitignore` | **已建立**（2026-10-10，根目录；`git check-ignore -v` 已验证 `weights/`、`data/` 等忽略生效） | 新增忽略类别时同步更新 |
 | 原始模型来源版本 / SHA-256 | **已记录**：`docs/model_provenance.md`（上游 commit `55328c4`，含 SHA-256、大小、Git blob 一致性核验与复算命令） | 上游更新或更换权重时重新核验并追加记录 |
-| `model.names` 与T值映射 | **未验证** | 模型加载后检查14类与类名编码 |
+| `model.names` 与T值映射 | **已核验（2026-10-10，`scripts/demo_i1_infer.py`）**：实际13类 `15,25,...,80`（T1.5–T8.0 缺 T2.0），类名=T×10，详见 `docs/model_provenance.md` 第4节 | 后续如更换权重重新核验 |
 | 实际预处理流程 | **未验证** | 单图实验与网页/文档说明逐项对照 |
 | PyTorch / CUDA / Ultralytics兼容组合 | **已实测（CPU）**：Python 3.13.16 + torch 2.14.1+cpu + ultralytics 8.4.175；CUDA 当前不可用（驱动未运行） | 驱动修复后如需GPU，再核验CUDA版组合并重新登记 |
 | 依赖锁定与包结构 | **待实现** | 通过首次最小推理实验决定 |
