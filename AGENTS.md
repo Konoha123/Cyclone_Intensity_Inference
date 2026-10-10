@@ -26,13 +26,13 @@
 
 | 项目 | 初始预期 / 已知条件 | 项目实测与锁定状态 |
 | --- | --- | --- |
-| 操作系统 | Ubuntu；主要本地开发环境 | **待记录**：`cat /etc/os-release` |
-| GPU | NVIDIA GeForce RTX 3090，24 GB | **待记录**：`nvidia-smi` / 驱动版本 |
-| Python | 候选 3.11，使用独立 Conda 环境 | **未创建/未验证** |
-| PyTorch / torchvision | 依照实际 CUDA / 驱动选择兼容组合 | **版本待定** |
-| Ultralytics | 上游采用 YOLOv8m-cls；项目 API 以安装版本为准 | **版本待定** |
-| OpenCV / Pillow | 图像 I/O 和预处理候选工具 | **版本待定** |
-| pytest / Ruff | 建议作为测试和静态检查工具 | **尚未配置** |
+| 操作系统 | Ubuntu；主要本地开发环境 | **Ubuntu 24.04.5 LTS**（2026-10-10 实测 `cat /etc/os-release`） |
+| GPU | NVIDIA GeForce RTX 3090，24 GB | **当前不可用**：`nvidia-smi` 无法与 NVIDIA 驱动通信（2026-10-10 实测）；后续修复驱动前按 CPU 环境执行 |
+| Python | 候选 3.11，使用独立 Conda 环境 | **Python 3.13.16**，独立 Conda 环境 `~/anaconda3/envs/cyclone-intensity-inference-env`（`.idea/misc.xml` 登记的项目 SDK；与候选 3.11 不一致，以实测为准） |
+| PyTorch / torchvision | 依照实际 CUDA / 驱动选择兼容组合 | **torch 2.14.1+cpu / torchvision 0.29.1+cpu**（CPU 版构建；`torch.cuda.is_available()` 为 False） |
+| Ultralytics | 上游采用 YOLOv8m-cls；项目 API 以安装版本为准 | **ultralytics 8.4.175**（另装有 ultralytics-thop 2.2.2） |
+| OpenCV / Pillow | 图像 I/O 和预处理候选工具 | **opencv-python 5.0.0.93 / Pillow 12.3.0**（另装有 numpy 2.5.2） |
+| pytest / Ruff | 建议作为测试和静态检查工具 | **尚未安装**（2026-10-10 实测 `python -m pip show pytest ruff` 无结果） |
 | 运行入口 | CLI/包结构待实现 | **不存在经过验收的命令** |
 | 上游权重 | 从作者仓库外部获取，存放 `weights/` | **尚未校验**：来源、SHA-256、类别表 |
 
@@ -204,7 +204,7 @@ outputs/                 # 预测图表、结果表及导出文件，忽略
 | 原始模型来源版本 / SHA-256 | **未记录** | 下载可信权重、固定hash和来源说明 |
 | `model.names` 与T值映射 | **未验证** | 模型加载后检查14类与类名编码 |
 | 实际预处理流程 | **未验证** | 单图实验与网页/文档说明逐项对照 |
-| PyTorch / CUDA / Ultralytics兼容组合 | **未验证** | 建独立环境并锁定成功版本 |
+| PyTorch / CUDA / Ultralytics兼容组合 | **已实测（CPU）**：Python 3.13.16 + torch 2.14.1+cpu + ultralytics 8.4.175；CUDA 当前不可用（驱动未运行） | 驱动修复后如需GPU，再核验CUDA版组合并重新登记 |
 | 依赖锁定与包结构 | **待实现** | 通过首次最小推理实验决定 |
 | 合法可用的独立推理测试数据 | **待确定** | 明确来源、用途、许可、气旋个例划分及上游训练重叠情况 |
 | CI / T / 风速的外部换算 | **未纳入初期功能** | 如新增，先写定义和测试 |

@@ -54,7 +54,7 @@ Cyclone-Intensity-Inference/
 
 ## 环境与科学边界
 
-候选 Ubuntu、Conda、Python 3.11、PyTorch、Ultralytics、OpenCV、NVIDIA RTX 3090；实际版本与GPU可用性**待部署核验**。当前没有已验收的命令、依赖锁定文件或本项目精度报告。
+实测环境（2026-10-10）：Ubuntu 24.04.5 LTS；Conda 环境 `cyclone-intensity-inference-env`，**Python 3.13.16**（非最初候选的 3.11）；**torch 2.14.1+cpu / torchvision 0.29.1+cpu**（CPU 版构建）；**ultralytics 8.4.175**；opencv-python 5.0.0.93、Pillow 12.3.0、numpy 2.5.2。**GPU 当前不可用**（RTX 3090 硬件在机，但 `nvidia-smi` 无法与驱动通信），修复驱动前按 CPU 环境执行。pytest/Ruff 尚未安装；当前没有已验收的命令、依赖锁定文件或本项目精度报告。
 
 **T-number、Dvorak CI与最大持续风速并非同一量；1分钟与10分钟平均风速不能混用。** Softmax概率未必经过校准；不应声称此项目具备业务定强资质。项目许可待独立决定；上游MIT说明不自动覆盖本工程引入的其他组件与资产。
 
