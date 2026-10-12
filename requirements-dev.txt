@@ -1,0 +1,8 @@
+# Dev/test dependencies for Cyclone-Intensity-Inference.
+# Official install method into the dedicated conda env (Ubuntu 24.04.5, Python 3.13.16):
+#   ~/anaconda3/envs/cyclone-intensity-inference-env/bin/python -m pip install pytest
+# Versions locked 2026-10-12 via `pip freeze` after install (pytest + its new transitive deps).
+pytest==9.1.1
+pluggy==1.6.0
+iniconfig==2.3.1
+Pygments==2.21.0
