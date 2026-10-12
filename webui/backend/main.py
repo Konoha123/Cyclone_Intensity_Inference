@@ -44,17 +44,24 @@ async def _lifespan(app: FastAPI) -> AsyncIterator[None]:
 
 
 class _FrontendStaticFiles(StaticFiles):
-    """frontend/ 未落盘（M2 阶段）时按普通 404 处理而非抛错。
+    """frontend/ 静态服务的两点本地化行为：
 
-    starlette 1.7.0 在首次请求时经 check_config 对缺失目录抛 RuntimeError；
-    此处仅在目录确实不存在时跳过该强校验——lookup_path 对缺失文件本就
-    返回 404，M3 落盘前端文件后走原生逻辑，本类无需任何改动。
+    1. 目录未落盘（M2 阶段）时按普通 404 处理而非抛错——starlette 1.7.0
+       在首次请求时经 check_config 对缺失目录抛 RuntimeError；
+    2. 响应追加 Cache-Control: no-cache——浏览器每次以 ETag 回源协商
+       （命中返回 304），本地迭代的前端改动在普通刷新下即时生效，
+       避免“改动已提交但页面仍运行旧 JS”的缓存误导。
     """
 
     async def check_config(self) -> None:
         if self.directory is not None and not Path(self.directory).exists():
             return
         await super().check_config()
+
+    async def get_response(self, path: str, scope):  # type: ignore[no-untyped-def]
+        response = await super().get_response(path, scope)
+        response.headers["Cache-Control"] = "no-cache"
+        return response
 
 
 def create_app(
