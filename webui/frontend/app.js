@@ -121,8 +121,24 @@
           },
         },
         plugins: {
-          legend: { position: "bottom" },
+          legend: {
+            position: "bottom",
+            labels: {
+              usePointStyle: true,
+              pointStyleWidth: 28,
+              generateLabels: function (chart) {
+                const items = Chart.defaults.plugins.legend.labels.generateLabels.call(this, chart);
+                items.forEach(function (it) {
+                  it.pointStyle = it.datasetIndex === 1 ? "line" : "rect";
+                });
+                return items;
+              },
+            },
+          },
           tooltip: {
+            filter: function (item) {
+              return item.datasetIndex === 0;
+            },
             callbacks: {
               label: function (ctx) {
                 return ctx.dataset.label + "：" + ctx.parsed.y.toFixed(4);
