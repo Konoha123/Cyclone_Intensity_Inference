@@ -17,7 +17,7 @@ header h1 { margin: 0; font-size: 22px; }
 header .subtitle { margin: 6px 0 0; font-size: 13px; opacity: 0.85; }
 
 main {
-  max-width: 1080px;
+  max-width: 1400px;
   margin: 24px auto;
   padding: 0 16px;
   display: grid;
@@ -28,7 +28,7 @@ main {
 }
 
 /* 窄屏回退为上下单列 */
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   main { grid-template-columns: 1fr; }
 }
 
@@ -58,7 +58,7 @@ main {
 #preview-wrap { margin-top: 14px; text-align: center; }
 #preview {
   max-width: 100%;
-  max-height: 340px;
+  max-height: 560px;
   border: 1px solid #d7dde3;
   border-radius: 6px;
 }
@@ -78,13 +78,13 @@ main {
 .metric-label { font-size: 13px; color: #52606d; }
 .metric-value { font-size: 30px; font-weight: 600; font-family: Consolas, Menlo, monospace; }
 
-.chart-wrap { position: relative; height: 340px; }
+.chart-wrap { position: relative; height: 440px; }
 
 .issues { font-size: 13px; color: #8a6d1a; margin: 12px 0 0; }
 .meta { font-size: 12px; color: #7b8794; margin: 10px 0 0; word-break: break-all; }
 
 footer {
-  max-width: 1080px;
+  max-width: 1400px;
   margin: 0 auto 28px;
   padding: 0 16px;
   font-size: 12px;
