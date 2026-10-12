@@ -25,7 +25,7 @@
     <p id="status-line" class="status"></p>
   </section>
 
-  <section class="card" id="result-card" hidden>
+  <section class="card" id="result-card">
     <h2>2 · Dvorak T 值概率分布</h2>
     <div class="metrics">
       <div class="metric">
@@ -37,9 +37,12 @@
         <span class="metric-value" id="t-mean-value">—</span>
       </div>
     </div>
-    <div class="chart-wrap"><canvas id="prob-chart"></canvas></div>
+    <div class="chart-wrap">
+      <div id="chart-placeholder">上传卫星图像并完成推理后，此处显示 T 值概率分布</div>
+      <canvas id="prob-chart"></canvas>
+    </div>
     <p class="issues" id="mapping-issues" hidden></p>
-    <p class="meta" id="meta-line"></p>
+    <p class="meta" id="meta-line">—</p>
   </section>
 </main>
 <footer>

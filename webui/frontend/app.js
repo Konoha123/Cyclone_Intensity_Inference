@@ -9,15 +9,27 @@
   const previewWrap = document.getElementById("preview-wrap");
   const previewImg = document.getElementById("preview");
   const statusLine = document.getElementById("status-line");
-  const resultCard = document.getElementById("result-card");
   const tModeValue = document.getElementById("t-mode-value");
   const tMeanValue = document.getElementById("t-mean-value");
   const mappingIssues = document.getElementById("mapping-issues");
   const metaLine = document.getElementById("meta-line");
   const preprocessingId = document.getElementById("preprocessing-id");
+  const chartPlaceholder = document.getElementById("chart-placeholder");
 
   let objectUrl = null;
   let chart = null;
+
+  function resetResultUI() {
+    tModeValue.textContent = "—";
+    tMeanValue.textContent = "—";
+    metaLine.textContent = "—";
+    mappingIssues.hidden = true;
+    chartPlaceholder.hidden = false;
+    if (chart) {
+      chart.destroy();
+      chart = null;
+    }
+  }
 
   imageInput.addEventListener("change", function () {
     const file = imageInput.files && imageInput.files[0];
@@ -27,7 +39,7 @@
     previewImg.src = objectUrl;
     previewWrap.hidden = false;
     predictBtn.disabled = false;
-    resultCard.hidden = true;
+    resetResultUI();
     statusLine.textContent = "";
   });
 
@@ -61,7 +73,7 @@
   });
 
   function renderResult(data) {
-    resultCard.hidden = false;
+    chartPlaceholder.hidden = true;
     tModeValue.textContent = "T " + data.t_mode.toFixed(1);
     tMeanValue.textContent = data.t_mean.toFixed(2);
     preprocessingId.textContent = data.preprocessing_id;
