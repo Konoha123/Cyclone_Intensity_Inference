@@ -1,6 +1,6 @@
 # Cyclone Intensity Inference
 
-> 热带气旋卫星影像强度分类模型的**推理验证与应用扩展**工程。独立Git仓库（规划 V0.3，2026-10-10）；当前尚未创建 GitHub 远程或实现可运行源码。
+> 热带气旋卫星影像强度分类模型的**推理验证与应用扩展**工程。独立Git仓库（规划 V0.3，2026-10-10）；已有可运行源码（推理核心 `src/cyclone_intensity/`、测试、webui 展示工具），尚未创建 GitHub 远程。
 
 ## 项目目标
 
@@ -22,17 +22,19 @@
 
 本仓库独立于 `Cyclone-Intensity-Training`，没有共同Git历史、共同依赖锁文件或跨仓库相对路径。只接收满足约定的模型交付资产（权重本体不进Git）：`model_id`、`model_sha256`、模型结构与依赖版本、输入张量/预处理定义、有序类别表及目标物理量、输出语义、数据/评估适用范围与局限。不能假定新权重与上游模型的类别或预处理相同。
 
-## 拟议工程结构（文档、.gitignore、docs/ 与本地权重/数据目录已建立，源码待实现）
+## 工程结构（源码与测试已建立，configs/ 待建）
 
 ```text
 Cyclone-Intensity-Inference/
 ├── README.md               # 本文件
 ├── AGENTS.md               # 本仓库AI代理纪律
 ├── .gitignore              # 忽略本地权重、测试影像与输出
-├── pyproject.toml          # 待建立
-├── src/cyclone_intensity/  # 待建立：推理/预处理/后处理
-├── scripts/                # 已建：demo 与工具脚本（`demo_i1_infer.py`：I1 单图推理演示）
-├── tests/                  # 待建立：无大型真实数据的测试
+├── pyproject.toml          # 已建：pytest 配置（pythonpath src/webui；打包元数据待定）
+├── requirements-dev.txt    # 已建：测试依赖锁定（pytest 9.1.1 及其新增传递依赖）
+├── src/cyclone_intensity/  # 已建：推理核心（权重SHA-256校验、类别映射核验、T值后处理）
+├── scripts/                # 已建：demo 与工具脚本（`demo_i1_infer.py`：I1 验收，核心库薄封装）
+├── tests/                  # 已建：核心库无权重单元测试
+├── webui/                  # 已建：本地展示工具（backend/ 后端 + frontend/ 前端，自包含，见 webui/README.md）
 ├── configs/                # 待建立：推理配置
 ├── docs/                # 已建：权重/数据来源与验证记录（model_provenance.md）、data 目录规则（data_layout.md）
 ├── weights/                # Git忽略；仅本地（已含上游 model.pt，见 docs/model_provenance.md）
@@ -51,10 +53,11 @@ Cyclone-Intensity-Inference/
 | I2 | 标准化输入与批量应用 | 可追溯的预处理契约、同输入可复现、CLI/CSV/JSON |
 | I3 | 固定模型独立评估 | 记录测试个例独立性与限制、独立指标和校准结果 |
 | I4 | 推理与应用优化 | 对照固定基准验证加速与功能改动，不隐式启动训练 |
+| W1 | **本地 Web 展示工具（应用扩展轨，非 I-主线）**：`webui/` 上传图像→概率分布图表与 t_mode/t_mean，前后端自包含 | API 测试与真权重冒烟通过；响应概率与 I1 基线逐位一致（2026-10-12 完成） |
 
 ## 环境与科学边界
 
-实测环境（2026-10-10）：Ubuntu 24.04.5 LTS；Conda 环境 `cyclone-intensity-inference-env`，**Python 3.13.16**（非最初候选的 3.11）；**torch 2.14.1+cpu / torchvision 0.29.1+cpu**（CPU 版构建）；**ultralytics 8.4.175**；opencv-python 5.0.0.93、Pillow 12.3.0、numpy 2.5.2。**GPU 当前不可用**（RTX 3090 硬件在机，但 `nvidia-smi` 无法与驱动通信），修复驱动前按 CPU 环境执行。pytest/Ruff 尚未安装；当前没有已验收的命令、依赖锁定文件或本项目精度报告。
+实测环境（2026-10-10，2026-10-12 增补）：Ubuntu 24.04.5 LTS；Conda 环境 `cyclone-intensity-inference-env`，**Python 3.13.16**（非最初候选的 3.11）；**torch 2.14.1+cpu / torchvision 0.29.1+cpu**（CPU 版构建）；**ultralytics 8.4.175**；opencv-python 5.0.0.93、Pillow 12.3.0、numpy 2.5.2。**GPU 当前不可用**（RTX 3090 硬件在机，但 `nvidia-smi` 无法与驱动通信），修复驱动前按 CPU 环境执行。**pytest 9.1.1 已安装**（`requirements-dev.txt` 锁定，运行 `python -m pytest`）；Ruff 暂不安装（2026-10-12 决定）。**webui 依赖**：`fastapi[standard]` 官方方式安装（fastapi 0.143.0 / uvicorn 0.54.0 / starlette 1.7.0 / pydantic 2.14.1 等共 43 个新包，`webui/requirements.txt` 锁定），前端 Chart.js v4.5.1 本地 vendor（SHA-256 见 `webui/README.md`）。已验收命令：`python webui/run.py`（本地展示工具，默认 127.0.0.1:8000）。当前没有本项目独立精度报告。
 
 **T-number、Dvorak CI与最大持续风速并非同一量；1分钟与10分钟平均风速不能混用。** Softmax概率未必经过校准；不应声称此项目具备业务定强资质。项目许可待独立决定；上游MIT说明不自动覆盖本工程引入的其他组件与资产。
 

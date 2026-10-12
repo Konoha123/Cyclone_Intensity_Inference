@@ -32,8 +32,9 @@
 | PyTorch / torchvision | 依照实际 CUDA / 驱动选择兼容组合 | **torch 2.14.1+cpu / torchvision 0.29.1+cpu**（CPU 版构建；`torch.cuda.is_available()` 为 False） |
 | Ultralytics | 上游采用 YOLOv8m-cls；项目 API 以安装版本为准 | **ultralytics 8.4.175**（另装有 ultralytics-thop 2.2.2） |
 | OpenCV / Pillow | 图像 I/O 和预处理候选工具 | **opencv-python 5.0.0.93 / Pillow 12.3.0**（另装有 numpy 2.5.2） |
-| pytest / Ruff | 建议作为测试和静态检查工具 | **尚未安装**（2026-10-10 实测 `python -m pip show pytest ruff` 无结果） |
-| 运行入口 | CLI/包结构待实现 | **不存在经过验收的命令** |
+| pytest / Ruff | 建议作为测试和静态检查工具 | **pytest 9.1.1 已安装（2026-10-12，官方 pip 方式，`requirements-dev.txt` 锁定含 pluggy/iniconfig/Pygments）**；Ruff 暂不安装（2026-10-12 用户决定） |
+| Web 服务（webui） | 展示工具依赖按需引入 | **`fastapi[standard]` 官方方式安装（2026-10-12）**：fastapi 0.143.0 / uvicorn 0.54.0 / starlette 1.7.0 / pydantic 2.14.1 / python-multipart 0.0.32 等共 43 个新包，`webui/requirements.txt` 精确锁定；前端 Chart.js v4.5.1 本地 vendor（SHA-256 双官方渠道交叉验证，溯源见 `webui/README.md`） |
+| 运行入口 | CLI/包结构待实现 | **已验收命令（2026-10-12）**：`python -m pytest`（根目录全量测试）；`python webui/run.py`（本地展示工具，默认 127.0.0.1:8000，启动时校验权重）；`python scripts/demo_i1_infer.py`（I1 验收脚本，核心库薄封装） |
 | 上游权重 | 从作者仓库外部获取，存放 `weights/` | **已下载并记录哈希（2026-10-10）**：`weights/model.pt`，来源、SHA-256、blob 一致性见 `docs/model_provenance.md`；类别表仍未验证 |
 
 代理如需定位环境问题，先使用只读命令（如 `python --version`、`python -m pip show ...`、`git status`）；不要假设 CUDA 可用，也不要自动更换显卡驱动、系统 Python 或用户现有 Conda 环境。
@@ -205,7 +206,8 @@ outputs/                 # 预测图表、结果表及导出文件，忽略
 | `model.names` 与T值映射 | **已核验（2026-10-10，`scripts/demo_i1_infer.py`）**：实际13类 `15,25,...,80`（T1.5–T8.0 缺 T2.0），类名=T×10，详见 `docs/model_provenance.md` 第4节 | 后续如更换权重重新核验 |
 | 实际预处理流程 | **未验证** | 单图实验与网页/文档说明逐项对照 |
 | PyTorch / CUDA / Ultralytics兼容组合 | **已实测（CPU）**：Python 3.13.16 + torch 2.14.1+cpu + ultralytics 8.4.175；CUDA 当前不可用（驱动未运行） | 驱动修复后如需GPU，再核验CUDA版组合并重新登记 |
-| 依赖锁定与包结构 | **待实现** | 通过首次最小推理实验决定 |
+| 依赖锁定与包结构 | **部分完成（2026-10-12）**：pytest 配置与测试依赖已锁（`pyproject.toml` 仅含 pytest 配置、`requirements-dev.txt`，commit `a831011`）；webui 依赖已锁（`webui/requirements.txt`，commit `5b30c0b`）；`pyproject.toml` 打包元数据（`[project]`）仍待定 | 首个需要 pip 安装的交付出现时补 `[project]` 与打包测试 |
+| webui 展示工具 | **已建立（2026-10-12，W1）**：commits `5b30c0b`（后端）+ `d29de3a`（前端），测试与启动命令见 `webui/README.md` | 用户迭代需求到达时保持 `webui/` 自包含纪律（前后端同目录，不混入研究代码） |
 | 合法可用的独立推理测试数据 | **待确定** | 明确来源、用途、许可、气旋个例划分及上游训练重叠情况 |
 | CI / T / 风速的外部换算 | **未纳入初期功能** | 如新增，先写定义和测试 |
 
