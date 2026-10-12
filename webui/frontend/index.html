@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>热带气旋卫星图像强度分类 · Dvorak T 值估计</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+  <h1>热带气旋卫星图像强度分类</h1>
+  <p class="subtitle">Dvorak T-number · 概率未校准 · 预处理管线未核验</p>
+</header>
+<main>
+  <section class="card" id="upload-card">
+    <h2>1 · 上传卫星图像</h2>
+    <div class="upload-row">
+      <input type="file" id="image-input" accept="image/jpeg,image/png,image/bmp,image/webp">
+      <button id="predict-btn" disabled>开始推理</button>
+    </div>
+    <p class="hint">支持 JPEG / PNG / BMP / WebP，不超过 20 MB；推理在本机 CPU 上进行，约需数秒。</p>
+    <div id="preview-wrap" hidden>
+      <img id="preview" alt="卫星图像预览">
+    </div>
+    <p id="status-line" class="status"></p>
+  </section>
+
+  <section class="card" id="result-card" hidden>
+    <h2>2 · Dvorak T 值概率分布</h2>
+    <div class="metrics">
+      <div class="metric">
+        <span class="metric-label">最大概率 T 值（t_mode）</span>
+        <span class="metric-value" id="t-mode-value">—</span>
+      </div>
+      <div class="metric">
+        <span class="metric-label">期望平均 T 值（t_mean）</span>
+        <span class="metric-value" id="t-mean-value">—</span>
+      </div>
+    </div>
+    <div class="chart-wrap"><canvas id="prob-chart"></canvas></div>
+    <p class="issues" id="mapping-issues" hidden></p>
+    <p class="meta" id="meta-line"></p>
+  </section>
+</main>
+<footer>
+  本地展示工具 · 输出单位 Dvorak T-number，不代表风速 · calibrated=false ·
+  preprocessing_id=<span id="preprocessing-id">—</span>
+</footer>
+<script src="/vendor/chart.umd.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>

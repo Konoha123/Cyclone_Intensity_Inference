@@ -115,9 +115,10 @@ class TestPredictEndpoint:
         assert resp.status_code == 413
 
 
-def test_frontend_root_returns_404_until_m3(client):
+def test_frontend_root_serves_index(client):
     resp = client.get("/")
-    assert resp.status_code == 404  # M2 预期：frontend/ 未落盘，M3 后此断言随前端验收更新
+    assert resp.status_code == 200  # M3 起：frontend/index.html 已落盘（M2 期间为 404）
+    assert "text/html" in resp.headers["content-type"]
 
 
 BASELINE = REPO_ROOT / "outputs" / "demo_i1_result.json"
